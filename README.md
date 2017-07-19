@@ -1,10 +1,8 @@
 Swift repository plugin for Elasticsearch
 =========================================
 
-**NOTE:** This plugin is looking for a new maintainer. The wikimedia foundation
-does not use this plugin actively and cannot guarantee proper testing of future
-releases. If you want to fork this plugin and plan to maintain it actively we
-will be happy to add a link here to your repo.
+
+### NOTE: This repository is no longer maintained. Please see [https://github.com/BigDataBoutique/elasticsearch-repository-swift](https://github.com/BigDataBoutique/elasticsearch-repository-swift) for new updates.
 
 In order to install the plugin, simply run: `bin/plugin install org.wikimedia.elasticsearch.swift/swift-repository-plugin/<version>`.
 
