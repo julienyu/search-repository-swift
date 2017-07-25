@@ -24,6 +24,7 @@
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <excludes>
                 <exclude>org.elasticsearch:elasticsearch</exclude>
+                <exclude>org.apache.logging.log4</exclude>
             </excludes>
         </dependencySet>
     </dependencySets>
