@@ -9,7 +9,9 @@ import org.elasticsearch.repositories.Repository;
 import org.wikimedia.elasticsearch.swift.repositories.SwiftRepository;
 import org.wikimedia.elasticsearch.swift.repositories.SwiftService;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,5 +28,11 @@ public class SwiftRepositoryPlugin extends Plugin implements RepositoryPlugin {
     public Map<String, Repository.Factory> getRepositories(Environment env, NamedXContentRegistry namedXContentRegistry) {
         return Collections.singletonMap(SwiftRepository.TYPE,
             (metadata) -> new SwiftRepository(metadata, env.settings(), namedXContentRegistry, createStorageService(env.settings())));
+    }
+    
+    @Override
+    public List<String> getSettingsFilter() {
+        return Arrays.asList(
+            SwiftRepository.Swift.PASSWORD_SETTING.getKey());
     }
 }
