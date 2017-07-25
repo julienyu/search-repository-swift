@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableMap;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.NoSuchFileException;
 import java.security.PrivilegedAction;
 import java.util.Collection;
 
@@ -25,7 +26,6 @@ import java.util.Collection;
  */
 public class SwiftBlobContainer extends AbstractBlobContainer {
     private final Logger logger = Loggers.getLogger(this.getClass());
-    
     // Our local swift blob store instance
     protected final SwiftBlobStore blobStore;
 
@@ -138,15 +138,24 @@ public class SwiftBlobContainer extends AbstractBlobContainer {
      */
     @Override
     public InputStream readBlob(final String blobName) throws IOException {
-        logger.error("The key path is: " + keyPath);
-        logger.error("The blob name is: " + blobName);
-        return SwiftPerms.exec(new PrivilegedAction<InputStream>() {
+        logger.error("The key path in readBlob is: " + keyPath);
+        logger.error("The blob name in readBlob is: " + blobName);
+        InputStream is = SwiftPerms.exec(new PrivilegedAction<InputStream>() {
             @Override
             public InputStream run() {
-                return new BufferedInputStream(blobStore.swift().getObject(buildKey(blobName)).downloadObjectAsInputStream(),
-                        blobStore.bufferSizeInBytes());
+                StoredObject storedObject = blobStore.swift().getObject(buildKey(blobName));
+                if (storedObject.exists()) {
+                    return new BufferedInputStream(storedObject.downloadObjectAsInputStream(),
+                            blobStore.bufferSizeInBytes());
+                }
+                return null;
             }
         });
+        
+        if (null == is) {
+            throw new NoSuchFileException("Blob object [" + blobName + "] not found.");
+        }
+        return is;
     }
 
 //    @Override
