@@ -1,12 +1,10 @@
 package org.wikimedia.elasticsearch.swift.repositories.blobstore;
 
-import org.apache.logging.log4j.Logger;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.blobstore.BlobMetaData;
 import org.elasticsearch.common.blobstore.BlobPath;
 import org.elasticsearch.common.blobstore.support.AbstractBlobContainer;
 import org.elasticsearch.common.blobstore.support.PlainBlobMetaData;
-import org.elasticsearch.common.logging.Loggers;
 import org.javaswift.joss.model.Directory;
 import org.javaswift.joss.model.DirectoryOrObject;
 import org.javaswift.joss.model.StoredObject;
@@ -25,7 +23,6 @@ import java.util.Collection;
  * Swift's implementation of the AbstractBlobContainer
  */
 public class SwiftBlobContainer extends AbstractBlobContainer {
-    private final Logger logger = Loggers.getLogger(this.getClass());
     // Our local swift blob store instance
     protected final SwiftBlobStore blobStore;
 
@@ -138,8 +135,6 @@ public class SwiftBlobContainer extends AbstractBlobContainer {
      */
     @Override
     public InputStream readBlob(final String blobName) throws IOException {
-        logger.error("The key path in readBlob is: " + keyPath);
-        logger.error("The blob name in readBlob is: " + blobName);
         InputStream is = SwiftPerms.exec(new PrivilegedAction<InputStream>() {
             @Override
             public InputStream run() {
@@ -157,19 +152,6 @@ public class SwiftBlobContainer extends AbstractBlobContainer {
         }
         return is;
     }
-
-//    @Override
-//    public void writeBlob(final String blobName, final BytesReference bytes) throws IOException {
-//        // need to remove old file if already exist
-//        deleteBlob(blobName);
-//        SwiftPerms.exec(new PrivilegedAction<Void>() {
-//            @Override
-//            public Void run() {
-//                blobStore.swift().getObject(buildKey(blobName)).uploadObject(new ByteArrayInputStream(bytes.array(), bytes.arrayOffset(), bytes.length()));
-//                return null;
-//            }
-//        });
-//    }
 
     @Override
     public void writeBlob(final String blobName, final InputStream in, final long blobSize) throws IOException {

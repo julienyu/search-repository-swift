@@ -37,6 +37,8 @@ public class SwiftService extends AbstractLifecycleComponent {
      *            The username
      * @param password
      *            The password
+     * @param preferredRegion
+     *            The preferred region set
      * @return swift Account
      */
     public synchronized Account swiftBasic(String url, String username, String password, String preferredRegion) {

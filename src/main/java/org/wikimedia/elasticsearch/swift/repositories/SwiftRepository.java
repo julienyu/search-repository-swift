@@ -21,6 +21,9 @@ public class SwiftRepository extends BlobStoreRepository {
     // The internal "type" for Elasticsearch
     public final static String TYPE = "swift";
     
+    /**
+     * Swift repository settings
+     */
     public interface Swift {
         Setting<String> CONTAINER_SETTING = Setting.simpleString("swift_container");
         Setting<String> URL_SETTING = Setting.simpleString("swift_url");
