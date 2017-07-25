@@ -1,10 +1,12 @@
 package org.wikimedia.elasticsearch.swift.repositories.blobstore;
 
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.blobstore.BlobMetaData;
 import org.elasticsearch.common.blobstore.BlobPath;
 import org.elasticsearch.common.blobstore.support.AbstractBlobContainer;
 import org.elasticsearch.common.blobstore.support.PlainBlobMetaData;
+import org.elasticsearch.common.logging.Loggers;
 import org.javaswift.joss.model.Directory;
 import org.javaswift.joss.model.DirectoryOrObject;
 import org.javaswift.joss.model.StoredObject;
@@ -22,6 +24,8 @@ import java.util.Collection;
  * Swift's implementation of the AbstractBlobContainer
  */
 public class SwiftBlobContainer extends AbstractBlobContainer {
+    private final Logger logger = Loggers.getLogger(this.getClass());
+    
     // Our local swift blob store instance
     protected final SwiftBlobStore blobStore;
 
@@ -134,6 +138,8 @@ public class SwiftBlobContainer extends AbstractBlobContainer {
      */
     @Override
     public InputStream readBlob(final String blobName) throws IOException {
+        logger.error("The key path is: " + keyPath);
+        logger.error("The blob name is: " + blobName);
         return SwiftPerms.exec(new PrivilegedAction<InputStream>() {
             @Override
             public InputStream run() {
