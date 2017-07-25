@@ -44,8 +44,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <elasticsearch.version>5.2.2</elasticsearch.version>
         <elasticsearch.plugin.name>swift-repository</elasticsearch.plugin.name>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
     <dependencies>
@@ -69,9 +69,9 @@
         <!-- Add logging dependencies as optional so they are present during debugging 
             but won't try to replace those packaged with Elasticsearch. -->
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.7</version>
             <optional>true</optional>
         </dependency>
         <dependency>

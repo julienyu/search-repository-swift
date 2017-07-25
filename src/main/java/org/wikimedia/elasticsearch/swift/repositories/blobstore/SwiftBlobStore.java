@@ -32,7 +32,7 @@ public class SwiftBlobStore extends AbstractComponent implements BlobStore {
      */
     public SwiftBlobStore(Settings settings, final Account auth, final String container) {
         super(settings);
-        this.bufferSizeInBytes = (int)settings.getAsBytesSize("buffer_size", new ByteSizeValue(100, ByteSizeUnit.KB)).bytes();
+        this.bufferSizeInBytes = (int)settings.getAsBytesSize("buffer_size", new ByteSizeValue(100, ByteSizeUnit.KB)).getBytes();
         swift = SwiftPerms.exec(new PrivilegedAction<Container>() {
             @Override
             public Container run() {
@@ -94,10 +94,7 @@ public class SwiftBlobStore extends AbstractComponent implements BlobStore {
         SwiftPerms.exec(new PrivilegedAction<Void>() {
             @Override
             public Void run() {
-                String keyPath = path.buildAsString("/");
-                if (!keyPath.isEmpty()) {
-                    keyPath = keyPath + "/";
-                }
+                String keyPath = path.buildAsString();
                 StoredObject obj = swift().getObject(keyPath);
                 if (obj.exists()) {
                     obj.delete();

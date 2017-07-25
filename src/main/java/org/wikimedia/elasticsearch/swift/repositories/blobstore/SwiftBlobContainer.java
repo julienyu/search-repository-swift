@@ -5,7 +5,6 @@ import org.elasticsearch.common.blobstore.BlobMetaData;
 import org.elasticsearch.common.blobstore.BlobPath;
 import org.elasticsearch.common.blobstore.support.AbstractBlobContainer;
 import org.elasticsearch.common.blobstore.support.PlainBlobMetaData;
-import org.elasticsearch.common.bytes.BytesReference;
 import org.javaswift.joss.model.Directory;
 import org.javaswift.joss.model.DirectoryOrObject;
 import org.javaswift.joss.model.StoredObject;
@@ -14,7 +13,6 @@ import org.wikimedia.elasticsearch.swift.SwiftPerms;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.PrivilegedAction;
@@ -38,11 +36,7 @@ public class SwiftBlobContainer extends AbstractBlobContainer {
     protected SwiftBlobContainer(BlobPath path, SwiftBlobStore blobStore) {
         super(path);
         this.blobStore = blobStore;
-        String keyPath = path.buildAsString("/");
-        if (!keyPath.isEmpty()) {
-            keyPath = keyPath + "/";
-        }
-        this.keyPath = keyPath;
+        this.keyPath = path.buildAsString();
     }
 
     /**
@@ -149,18 +143,18 @@ public class SwiftBlobContainer extends AbstractBlobContainer {
         });
     }
 
-    @Override
-    public void writeBlob(final String blobName, final BytesReference bytes) throws IOException {
-        // need to remove old file if already exist
-        deleteBlob(blobName);
-        SwiftPerms.exec(new PrivilegedAction<Void>() {
-            @Override
-            public Void run() {
-                blobStore.swift().getObject(buildKey(blobName)).uploadObject(new ByteArrayInputStream(bytes.array(), bytes.arrayOffset(), bytes.length()));
-                return null;
-            }
-        });
-    }
+//    @Override
+//    public void writeBlob(final String blobName, final BytesReference bytes) throws IOException {
+//        // need to remove old file if already exist
+//        deleteBlob(blobName);
+//        SwiftPerms.exec(new PrivilegedAction<Void>() {
+//            @Override
+//            public Void run() {
+//                blobStore.swift().getObject(buildKey(blobName)).uploadObject(new ByteArrayInputStream(bytes.array(), bytes.arrayOffset(), bytes.length()));
+//                return null;
+//            }
+//        });
+//    }
 
     @Override
     public void writeBlob(final String blobName, final InputStream in, final long blobSize) throws IOException {

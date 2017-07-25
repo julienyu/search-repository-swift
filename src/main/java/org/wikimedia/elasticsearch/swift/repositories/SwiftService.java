@@ -13,7 +13,7 @@ import org.javaswift.joss.exception.CommandException;
 import org.javaswift.joss.model.Account;
 import org.wikimedia.elasticsearch.swift.SwiftPerms;
 
-public class SwiftService extends AbstractLifecycleComponent<SwiftService> {
+public class SwiftService extends AbstractLifecycleComponent {
     // The account we'll be connecting to Swift with
     private Account swiftUser;
 
